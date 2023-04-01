@@ -1,5 +1,5 @@
-import PhotoDay from './features/photoDay/PhotoDay';
-import { palette1 } from './features/common/ColorPalettes';
+import PhotoDay from '../features/photoDay/PhotoDay';
+import { palette1 } from '../features/common/ColorPalettes';
 
 function App() {
   const theme = palette1();
