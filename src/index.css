@@ -1,0 +1,14 @@
+html {
+  margin: 0;
+  padding: 0;
+  font-size: 16px;
+}
+
+@media (max-width: 1024px) {
+  html { font-size: 12px; }
+}
+
+body {
+  margin: inherit;
+  padding: inherit;
+}
