@@ -9,50 +9,42 @@ import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import PhotoType from "../common/Types/PhotoType";
 import { getPhotoDay } from "../common/utils/http";
 
-interface PhotoDayProps extends ComponentProps {
-
-}
-
-
+interface PhotoDayProps extends ComponentProps {}
 
 const PhotoDay = ({ theme }: PhotoDayProps): JSX.Element => {
-
-    const today = (new Date(Date.now())).toISOString().substring(0, 10);
+    const today = (new Date(Date.now())).toISOString().substring(0, 10); // gets today's date in yyyy-mm-dd format
 
     const [newDate, setNewDate] = useState<string>("2022-10-01");
-    const [open, setOpen] = useState(false);
-
-    const [photo, setPhoto] = useState<PhotoType>();
     const [todayPhoto, setTodayPhoto] = useState<PhotoType>();
+    const [photo, setPhoto] = useState<PhotoType>();
+    const [open, setOpen] = useState(false);
 
     const handleGetPhotoDay = (date: string, setDate: React.Dispatch<React.SetStateAction<PhotoType | undefined>>) => {
         getPhotoDay(date)
             .then(({ url, explanation, date, title }) => setDate({ url, explanation, date, title }))
             .catch(e => console.warn(e))
-
     }
 
     useEffect(() => {
         handleGetPhotoDay(today, setTodayPhoto);
         handleGetPhotoDay(newDate, setPhoto);
-    }, [])
+    }, []); // As soon as the component is assembled, see today's photo and the photo of a mocked date
 
     return <PhotoDayWrapper theme={theme}>
         <section>
             <h2>El cosmos hoy</h2>
-            <PhotoCard theme={theme} photo={todayPhoto} />
+            {todayPhoto && <PhotoCard theme={theme} photo={todayPhoto} />}
         </section>
 
         <NasaLogo />
 
         <section>
             <h2>El cosmos el día: {photo?.date}</h2>
-            <PhotoCard theme={theme} photo={photo} />
+            {photo && <PhotoCard theme={theme} photo={photo} />}
         </section>
 
         <span>
@@ -79,6 +71,8 @@ const PhotoDay = ({ theme }: PhotoDayProps): JSX.Element => {
         </Dialog>
     </PhotoDayWrapper>
 }
+
+// Styles
 
 const PhotoDayWrapper = styled.main<ComponentProps>`
     width: 100vw;

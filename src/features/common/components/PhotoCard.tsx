@@ -4,7 +4,7 @@ import PhotoType from "../Types/PhotoType";
 import { useState } from "react";
 import { Box, Fade, Modal, Typography } from "@mui/material";
 
-interface PhotoCardProps extends ComponentProps { photo: PhotoType | undefined } // TODO remove undefined
+interface PhotoCardProps extends ComponentProps { photo: PhotoType }
 
 const PhotoCard = ({ theme, photo }: PhotoCardProps): JSX.Element => {
   const [open, setOpen] = useState(false);
@@ -13,7 +13,7 @@ const PhotoCard = ({ theme, photo }: PhotoCardProps): JSX.Element => {
   const handleClose = () => setOpen(false);
 
   return <CardContainer theme={theme}>
-    <img src={photo?.url} onClick={handleOpen} style={{ borderRadius: "inherit", width: "100%" }} />
+    <img src={photo.url} onClick={handleOpen} style={{ borderRadius: "inherit", width: "100%" }} alt={"nasa image " + photo.title } />
 
     <Modal
       open={open}
@@ -23,15 +23,17 @@ const PhotoCard = ({ theme, photo }: PhotoCardProps): JSX.Element => {
     >
       <Fade in={open}>
         <BoxStyled theme={theme}>
-          <Typography id="modal-title" variant="h6" component="h2" children={photo?.title} />
-          <Typography id="modal-explanation" sx={{ mt: 2 }} children={photo?.explanation} />
+          <Typography id="modal-title" variant="h6" component="h2" children={photo.title} />
+          <Typography id="modal-explanation" sx={{ mt: 2 }} children={photo.explanation} />
         </BoxStyled>
       </Fade>
     </Modal>
   </CardContainer>
 }
 
-const BoxStyled = styled(Box) <ComponentProps>`
+// Styles
+
+const BoxStyled = styled(Box)<ComponentProps>`
     position: absolute;
     overflow-y: scroll;
     top: 50%;
@@ -55,7 +57,7 @@ const BoxStyled = styled(Box) <ComponentProps>`
       background-color: ${props => props.theme.accentLight};
       border-radius: 1rem;
     }
-`
+`;
 
 const CardContainer = styled.figure`
     position: relative;
@@ -64,9 +66,6 @@ const CardContainer = styled.figure`
     width: 90%;
     display: flex;
     cursor: pointer;
-    
-    & > img {
-    }
 `;
 
 export default PhotoCard;
