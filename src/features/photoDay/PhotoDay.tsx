@@ -18,12 +18,17 @@ interface PhotoDayProps extends ComponentProps {}
 const PhotoDay = ({ theme }: PhotoDayProps): JSX.Element => {
     const today = (new Date(Date.now())).toISOString().substring(0, 10); // gets today's date in yyyy-mm-dd format
 
+    const [loadingImage1, setLoadingImage1] = useState<boolean>(true);
+    const [loadingImage2, setLoadingImage2] = useState<boolean>(true);
+
     const [newDate, setNewDate] = useState<string>("2022-10-01");
     const [todayPhoto, setTodayPhoto] = useState<PhotoType>();
     const [photo, setPhoto] = useState<PhotoType>();
     const [open, setOpen] = useState(false);
 
     const handleGetPhotoDay = (date: string, setDate: React.Dispatch<React.SetStateAction<PhotoType | undefined>>) => {
+        setLoadingImage2(true);
+
         getPhotoDay(date)
             .then(({ url, explanation, date, title }) => setDate({ url, explanation, date, title }))
             .catch(e => console.warn(e))
@@ -37,14 +42,14 @@ const PhotoDay = ({ theme }: PhotoDayProps): JSX.Element => {
     return <PhotoDayWrapper theme={theme}>
         <section>
             <h2>El cosmos hoy</h2>
-            {todayPhoto && <PhotoCard theme={theme} photo={todayPhoto} />}
+            {todayPhoto && <PhotoCard theme={theme} photo={todayPhoto} loadingImage={loadingImage1} setLoadingImage={setLoadingImage1} />}
         </section>
 
         <NasaLogo />
 
         <section>
             <h2>El cosmos el día: {photo?.date}</h2>
-            {photo && <PhotoCard theme={theme} photo={photo} />}
+            {photo && <PhotoCard theme={theme} photo={photo} loadingImage={loadingImage2} setLoadingImage={setLoadingImage2} />}
         </section>
 
         <span>

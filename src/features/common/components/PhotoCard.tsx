@@ -3,17 +3,23 @@ import styled from "styled-components";
 import PhotoType from "../Types/PhotoType";
 import { useState } from "react";
 import { Box, Fade, Modal, Typography } from "@mui/material";
+import CircularProgress from '@mui/material/CircularProgress';
 
-interface PhotoCardProps extends ComponentProps { photo: PhotoType }
+interface PhotoCardProps extends ComponentProps { 
+  photo: PhotoType, 
+  loadingImage: boolean, 
+  setLoadingImage: React.Dispatch<React.SetStateAction<boolean>> 
+}
 
-const PhotoCard = ({ theme, photo }: PhotoCardProps): JSX.Element => {
+const PhotoCard = ({ theme, photo, loadingImage, setLoadingImage }: PhotoCardProps): JSX.Element => {
   const [open, setOpen] = useState(false);
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
   return <CardContainer theme={theme}>
-    <img src={photo.url} onClick={handleOpen} style={{ borderRadius: "inherit", width: "100%" }} alt={"nasa image " + photo.title } />
+    {loadingImage && <CircularProgressStyled />}
+    <img src={photo.url} onClick={handleOpen} onLoad={() => setLoadingImage(false)} style={{ borderRadius: "inherit", width: "100%", visibility: loadingImage ? "hidden" : "visible" }} alt={"nasa image " + photo.title } />
 
     <Modal
       open={open}
@@ -32,6 +38,11 @@ const PhotoCard = ({ theme, photo }: PhotoCardProps): JSX.Element => {
 }
 
 // Styles
+
+const CircularProgressStyled = styled(CircularProgress)`
+  position: absolute;
+  top: 50%;
+`
 
 const BoxStyled = styled(Box)<ComponentProps>`
     position: absolute;
@@ -65,7 +76,9 @@ const CardContainer = styled.figure`
     border-radius: 1.5rem;
     width: 90%;
     display: flex;
+    min-height: 100px;
     cursor: pointer;
+    justify-content: center;
 `;
 
 export default PhotoCard;
