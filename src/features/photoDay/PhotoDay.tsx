@@ -68,6 +68,10 @@ const PhotoDay = ({ theme }: PhotoDayProps): JSX.Element => {
                     fullWidth
                     variant="outlined"
                     onChange={e => setNewDate(e.target.value)}
+                    inputProps={{
+                        min: "1995-06-16",
+                        max: today
+                    }}
                 />
             </DialogContent>
             <DialogActions>
